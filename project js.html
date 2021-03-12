@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Java testy</title>
+</head>
+<body>
+    <h1>testy JAVASCRIPTU</h1>
+    <script>
+//let age = prompt('Podaj swój wiek')
+//console.log(`Masz ${age >= 18 ? 'więcej niż 18 lat, super' : 'mniej niż 18 lat, idz do mamy'}`);
+//if w jednej linijce, fajne
+
+const numery = [12, 6, 8, 15, 19, 24, 11, 25, 20, 30, 28];
+const analyze = numery => ({
+        'suma wartosci': suma(numery),
+        'ilosc probek': ilosc(numery),
+        'srednia arytmetyczna':srednia(numery),
+        'mediana': mediana(numery),
+        'wariancja z proby':wariancja(numery),
+        'odchylenie standardowe z proby': odchylenie(numery),
+    })
+    function suma(numery){
+        let sum = 0;
+        for (i = 0; i < numery.length; i++) sum += numery[i];
+        return sum;
+    }
+    function ilosc(numery){ 
+        let result = 0;
+        return result = numery.length;       
+    }
+    function srednia(numery){
+        return suma(numery) / numery.length;
+    }
+    function mediana(numery){
+        numery.sort(function(a, b){
+            return a - b;
+        });
+        med = numery.length / 2
+        return med % 1 ? numery[med - 0.5] : (numery[med - 1] + numery[med]) / 2;
+    }
+    function wariancja(numery){
+        let avg = srednia(numery);
+		return srednia(numery.map(function(i) {
+        return Math.pow(i - avg, 2);
+        }));
+    }
+    function odchylenie(numery){
+        return Math.sqrt(wariancja(numery), 2);
+    }   
+            console.log(analyze(numery));
+    </script>
+</body>
+</html>

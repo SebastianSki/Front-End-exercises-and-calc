@@ -1,0 +1,21 @@
+﻿div 
+{
+    width: 450px;
+    padding: 10px;
+    margin: 10px 15px;
+    border-left: 5px solid orange;
+    border-bottom: 5px solid orange;
+    border-right: 2px groove mediumseagreen;
+    border-top: 2px groove mediumseagreen;
+}
+input
+{
+    width:25px;
+}
+p
+{
+    font-size:20px;
+}
+button{
+    margin: 8px;
+}

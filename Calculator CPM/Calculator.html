@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css">
+    <title>Kalkulator przemiany</title>
+</head>
+
+<body>
+    <div>
+            <label for="waga"><b>Waga</b></label>
+            <input type="text" class="waga" id="waga" />
+            <label>kg</label>
+            <br />
+            <br />
+
+            <label for="wzrost">Wzrost</label>
+            <input type="text" class="wzrost" id="wzrost" />
+            <label>cm</label>
+            <br />                          <!--poprawić te br'y-->
+            <br />
+
+            <label for="wiek">Wiek</label>
+            <input type="text" class="wiek" id="wiek" />
+            <br />
+            <br />
+
+            <label for="plec">Płeć:</label>
+            <select class="plec" id="plec">
+                <option value="kobieta">Kobieta</option>
+                <option value="mezczyzna">Mężczyzna</option>
+            </select>
+
+            <label for="aktywnosc">Aktywność fizyczna:</label>
+            <select class="aktywnosc" id="aktywnosc">
+                <option value="lezaca">Osoba leżąca</option>
+                <option value="siedzaca">Siedzący tryb życia</option> 
+                <option value="srednia aktywnosc">Umiarkowana aktywność fizyczna</option> 
+                <option value="aktywna">Aktywny tryb życia</option>
+                <option value="sportowiec">Sportowiec</option>
+            </select>
+            <br>
+            <br>
+
+            <label for="wzor">Wzór:</label>
+            <select class="wzor" id="wzor">
+                <option value="mifflin">Wzór Mifflina</option>
+                <option value="harris">Wzór Harrisa-Benedicta</option>
+            </select>
+            <br>
+            <br>
+            <p id="wynik"></p>
+            <button class="btn" id="btn" onclick="okreslWzor()">Oblicz całkowitą przemianę materii</button>
+            <button class="btn1" id="btn1" onclick="obliczRedukcje()">Oblicz zapotrzebowanie redukcji</button>
+
+            <label for="redukcja">Wartość redukcji</label>
+            <select class="redukcja" id="redukcja">
+                <option value="5">Redukcja 5%</option>
+                <option value="10">Redukcja 10%</option>
+                <option value="15">Redukcja 15%</option>
+                <option value="20">Redukcja 20%</option>
+            </select>
+
+            <p id="redukcjaw"></p>
+    </div>
+    
+
+
+    <script>
+        "use strict";
+
+        var wiek;
+        var wzrost; 
+        var waga;
+        var plec;
+        var aktywnosc;
+        var wzor;
+        var redukcja;
+        var ccpm;
+
+        var a;
+        var b;
+        var c;
+        var d;
+        var e;
+        var f;
+        var r;
+
+        function okreslWzor() { /* dajemy mozliwosc wyboru wzoru dla pacjenta*/
+            wzor = document.getElementById("wzor").value;
+            if (wzor == "mifflin") {
+                cpmMifflin();
+            } else if (wzor == "harris") {
+                cpmHarris();
+            }
+        }
+
+        function okreslAktyw() { /* prownujemy pobrana wartosc i przypisujemy odpowiednia wartosc liczbowa na potrzeby wzoru */
+            if (aktywnosc == "lezaca") {
+                e = 1.2;
+            } else if (aktywnosc == "siedzaca") {
+                e = 1.25;
+            } else if (aktywnosc == "srednia aktywnosc") {
+                e = 1.5;
+            } else if (aktywnosc == "aktywna") {
+                e = 1.75;
+            } else {
+                e = 2;
+            }
+        }
+
+        function okreslPlecMi() {  /* okreslamy plec dzieki czemu odpowiednio ustawiamy jedna zmienna we wzorze */
+            if (plec == "kobieta") {
+                d = 161;
+            } else {
+                d = (-5);
+            }
+        }
+
+        function okreslPlecHa() {  /* okreslamy plec dzieki czemu odpowiednio ustawiamy jedna zmienna we wzorze */
+            if (plec == "kobieta") {
+                d = 655.1;
+            } else {
+                d = 66.5;
+            }
+        }
+
+        function pobierzDane() {   /* pobieramy nowo uzupełnione wartości przez użytkownika na potrzeby wyliczeń */
+            wiek = document.getElementById("wiek").value;
+            wzrost = document.getElementById("wzrost").value;
+            waga = document.getElementById("waga").value;
+            plec = document.getElementById("plec").value;
+            aktywnosc = document.getElementById("aktywnosc").value;
+        }
+
+        function cpmMifflin() {     /* robie koercje, zeby typ wartosci byl odpowiedni i wykonywany jest wzor ponizej i zwraca on wynik dla uzytkownika na stronie*/
+            pobierzDane();
+
+            a = Number(waga);
+            b = Number(wzrost);
+            c = Number(wiek);
+
+            okreslPlecMi();
+            okreslAktyw();
+
+            let cpm = ((10 * a) + (6.25 * b) - (5 * c) - d) * e ;
+
+            document.getElementById("wynik").innerHTML = cpm.toFixed(2) + " kcal";
+
+            ccpm = cpm;
+        }
+
+        function cpmHarris() {    /* drugi wariant wzoru , dokładnie to samo wykonuje korzystajac z tych samych zmiennych */
+            pobierzDane();
+
+            a = Number(waga);
+            b = Number(wzrost);
+            c = Number(wiek);
+
+            okreslPlecHa();
+            okreslAktyw();
+            var cpm;
+
+            if (plec == "kobieta") {
+                cpm = ((9.563 * a) + (1.85 * b) - (4.676 * c) + d) * e;
+            } else {
+                cpm = ((13.75 * a) + (5.003 * b) - (6.775 * c) + d) * e;
+            }
+            
+            document.getElementById("wynik").innerHTML = cpm.toFixed(2) + " kcal";
+            ccpm = cpm;
+        }
+
+
+        function okreslRedukcje(){
+            if(redukcja == "5"){
+                r = 5;
+            } else if (redukcja == "10"){
+                r = 10;
+            } else if (redukcja == "15"){
+                r = 15;
+            } else{
+                r = 20;
+            }
+        }
+        function obliczRedukcje(){
+            pobierzRedukcje();
+            okreslRedukcje();
+            
+            var rpm;
+
+            redukcja = (ccpm/100)*r;
+            rpm = ccpm - redukcja;
+
+            document.getElementById("redukcjaw").innerHTML = rpm.toFixed(2) + " kcal";
+        }
+        function pobierzRedukcje(){
+            redukcja = document.getElementById("redukcja").value;
+        }
+
+    </script>
+</body>
+</html>
